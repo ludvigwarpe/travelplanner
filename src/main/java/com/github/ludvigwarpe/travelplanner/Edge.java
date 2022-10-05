@@ -24,6 +24,10 @@ public class Edge {
         this.destination = destination;
     }
 
+    /*
+     * Adds all the departuretimes between the current node and its destination.
+     * This is used for calculating the edge's G-value.
+     */
     public void addToTimeTable(String lineNr, String departureTime) {
         if (departureTime.length() == 7)
             departureTime = "0" + departureTime;
@@ -38,29 +42,20 @@ public class Edge {
         Collections.sort(timetable.get(lineNr));
     }
 
-    public void setWeight(int diffMinutes) {
-        this.weight = (double) diffMinutes;
-    }
-
-    public void printTimeTable() {
-        if (timetable.isEmpty())
-            throw new IllegalStateException("Timetable is empty");
-
-        for (Map.Entry<String, List<LocalTime>> entry : timetable.entrySet()) {
-            System.out.println("LineNr: " + entry.getKey());
-            for (LocalTime time : entry.getValue())
-                System.out.println(time);
-        }
-    }
-
+    /*
+     * Calculates the G-value of a trip between two nodes sharing an edge.
+     * The G-value is the weight of the edge (time of travel) and the potential waiting time combined.
+     */
     public void calculateG(LocalTime now) {
         ArrayList<LocalTime> departuresAfter = new ArrayList<>();
+
         for (Map.Entry<String, List<LocalTime>> entry : timetable.entrySet()) {
             for (LocalTime time : entry.getValue()) {
                 if (time.equals(now) || time.isAfter(now))
                     departuresAfter.add(time);
             }
         }
+
         if (!departuresAfter.isEmpty()) {
             LocalTime next = Collections.min(departuresAfter);
 
@@ -71,6 +66,17 @@ public class Edge {
 
             long diff = now.until(next, ChronoUnit.MINUTES);
             this.g = weight + (double) diff;
+        }
+    }
+
+    public void printTimeTable() {
+        if (timetable.isEmpty())
+            throw new IllegalStateException("Timetable is empty");
+
+        for (Map.Entry<String, List<LocalTime>> entry : timetable.entrySet()) {
+            System.out.println("LineNr: " + entry.getKey());
+            for (LocalTime time : entry.getValue())
+                System.out.println(time);
         }
     }
 
@@ -92,6 +98,10 @@ public class Edge {
 
     public double getG() {
         return g;
+    }
+
+    public void setWeight(int diffMinutes) {
+        this.weight = (double) diffMinutes;
     }
 
     @Override

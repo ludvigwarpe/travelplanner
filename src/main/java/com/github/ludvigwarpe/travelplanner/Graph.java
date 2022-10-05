@@ -4,13 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 /*
  * @author Ludvig Warpe
  * 
  */
-
- import java.util.*;
 
 public class Graph {
 
@@ -264,4 +263,17 @@ public class Graph {
         }
     }
 
+    public Set<Node> getNodes(){
+        return Collections.unmodifiableSet(adjList.keySet());
+    }
+
+    public List<Edge> getNodeEdges(String stopName){
+        List<Edge> stationEdges = null;
+        
+        for (Map.Entry<Node, List<Edge>> entry : adjList.entrySet()) {
+            if (entry.getKey().getStopName().equals(stopName))
+                stationEdges = entry.getValue();
+        }
+        return Collections.unmodifiableList(stationEdges);
+    }
 }
