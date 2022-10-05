@@ -4,6 +4,11 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+/**
+ * @author Ludvig Warpe
+ *
+ */
+
 public class Edge {
 
     private final Node current;

@@ -1,13 +1,12 @@
 package com.github.ludvigwarpe.travelplanner;
 
+import java.time.LocalTime;
+import java.util.Scanner;
+
 /**
  * @author Ludvig Warpe
  *
  */
-
-import java.time.LocalTime;
-import java.util.Scanner;
-
 
 public class App {
     private Scanner scanner = new Scanner(System.in);
